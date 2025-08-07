@@ -35,7 +35,17 @@ public class ProfileService {
     }
 
     // Get profiles by User
-    public List<ProfilesDto> getProfilesByUser(Integer idUser) {
+    public List<ProfilesDto> getProfilesByUser() {
+        Users user = commonService.authenticationCurrent();
+
+        return profileRepository.findByUsers(user)
+                .stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    // Get profile by Id User
+    public List<ProfilesDto> getProfilesByIdUser(Integer idUser) {
         Users user = usersRepository.findById(idUser)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 

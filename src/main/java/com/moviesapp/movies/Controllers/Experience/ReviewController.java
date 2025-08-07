@@ -36,7 +36,7 @@ public class ReviewController {
     }
 
     // Get Reviews by Movie
-    @GetMapping("/{idMovie}/reviews")
+    @GetMapping("/movie")
     public Page<ReviewDto> getReviewsByMovie(@RequestParam(defaultValue = "0") int page,
                                              @RequestParam(defaultValue = "10") int size,
                                              @RequestParam Integer idMovie) {

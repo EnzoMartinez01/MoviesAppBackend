@@ -24,6 +24,7 @@ public class Review {
     @JoinColumn(nullable = false)
     private Movies movie;
 
+    @Column(length = 500)
     private String comment;
     @Column(nullable = false)
     private Double rating;

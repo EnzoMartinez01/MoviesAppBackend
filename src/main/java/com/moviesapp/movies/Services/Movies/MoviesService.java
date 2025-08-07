@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,19 @@ public class MoviesService {
         this.moviesRepository = moviesRepository;
         this.genreRepository = genreRepository;
         this.commonService = commonService;
+    }
+
+    // Get Movies by Filters
+    public Page<MoviesDto> searchMoviesWithFilters(String searchTerm,
+                                                String language,
+                                                String ranking,
+                                                Boolean isActive,
+                                                LocalDate releaseDateStart,
+                                                LocalDate releaseDateEnd,
+                                                Pageable pageable) {
+        return moviesRepository.searchMoviesWithFilters(
+                searchTerm, language, ranking, isActive, releaseDateStart, releaseDateEnd, pageable
+        ).map(this::mapToDto);
     }
 
     // Get All Movies
@@ -51,12 +65,23 @@ public class MoviesService {
     public Page<MoviesDto> getMovieByGenre(int page, int size,
                                            Integer idGenre, Boolean isActive) {
         Pageable pageable = PageRequest.of(page, size);
-        Genre genre = genreRepository.findById(idGenre)
-                .orElseThrow(() -> new RuntimeException("Genre not found"));
-        Page<Movies> moviesPage = moviesRepository.findByGenreAndIsActive(pageable, genre, isActive);
+
+        Genre genre = null;
+        if (idGenre != null) {
+            genre = genreRepository.findById(idGenre)
+                    .orElseThrow(() -> new RuntimeException("Genre not found"));
+        }
+
+        Page<Movies> moviesPage = moviesRepository.findByGenreAndIsActive(genre, isActive, pageable);
         return moviesPage.map(this::mapToDto);
     }
 
+
+    public Page<MoviesDto> getTopRatedMovies(boolean isActive, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Movies> movies = moviesRepository.findTopRatedMoviesByActive(isActive, pageable);
+        return movies.map(this::mapToDto);
+    }
 
     // Map to DTO for Movies
     public MoviesDto mapToDto(Movies movies) {

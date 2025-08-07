@@ -3,6 +3,8 @@ package com.moviesapp.movies.Controllers.Profiles;
 import com.moviesapp.movies.Dto.Profile.UserDto;
 import com.moviesapp.movies.Models.Authentication.Users;
 import com.moviesapp.movies.Services.Profile.UsersService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -30,6 +32,17 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+
+    // Get ALL Users
+    @GetMapping("/getAll")
+    public Page<UserDto> getAllUsers(
+            @RequestParam(required = false) String searchTerm,
+            @RequestParam(required = false) Boolean isActive,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return usersService.getUsers(searchTerm, isActive, PageRequest.of(page, size));
     }
 
     //Updated User
