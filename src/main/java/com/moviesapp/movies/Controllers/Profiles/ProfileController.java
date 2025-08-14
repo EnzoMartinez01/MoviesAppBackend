@@ -22,16 +22,26 @@ public class ProfileController {
     }
 
     // Get Profile by User
-    @GetMapping("/getProfiles/{idUser}")
-    public ResponseEntity<List<ProfilesDto>> getProfiles(@PathVariable Integer idUser) {
+    @GetMapping("/getProfiles")
+    public ResponseEntity<List<ProfilesDto>> getProfiles() {
         try {
-            List<ProfilesDto> profiles = profileService.getProfilesByUser(idUser);
+            List<ProfilesDto> profiles = profileService.getProfilesByUser();
             return ResponseEntity.ok(profiles);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
+    // Get Profiles By Id User
+    @GetMapping("/getProfile/{idUser}")
+    public ResponseEntity<List<ProfilesDto>> getProfilesByIdUser(@PathVariable Integer idUser) {
+        try {
+            List<ProfilesDto> profiles = profileService.getProfilesByIdUser(idUser);
+            return ResponseEntity.ok(profiles);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
     // Create new Profiles
     @PostMapping("/createProfile")

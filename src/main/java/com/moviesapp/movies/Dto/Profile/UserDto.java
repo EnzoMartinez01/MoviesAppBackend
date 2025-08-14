@@ -16,6 +16,7 @@ public class UserDto {
     private LocalDate birthDate;
     private String email;
     private String username;
-
+    private String roleName;
+    private Boolean isActive;
     List<ProfilesDto> profiles;
 }

@@ -49,11 +49,11 @@ public class WatchlistController {
     }
 
     // Add movie to watchlist
-    @PutMapping("/{idWatchlist}/addMovie")
+    @PutMapping("/addMovie")
     public ResponseEntity<Map<String, String>> addMovieToWatchlist(@RequestParam Integer idMovie,
                                          @RequestParam Integer idWatchlist) {
         try {
-            Watchlist watchlist = watchlistService.addMovieToWatchlist(idMovie, idWatchlist);
+            Watchlist watchlist = watchlistService.addMovieToWatchlist(idWatchlist, idMovie);
             Map<String, String> response = new HashMap<>();
             response.put("message", "Movie added to watchlist successfully");
             return ResponseEntity.status(HttpStatus.OK).body(response);

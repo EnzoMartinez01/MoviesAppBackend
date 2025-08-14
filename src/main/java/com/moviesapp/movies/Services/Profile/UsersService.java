@@ -8,6 +8,8 @@ import com.moviesapp.movies.Repositories.Authentication.UsersRepository;
 import com.moviesapp.movies.Services.Common.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +37,13 @@ public class UsersService {
                 .map(this::mapToDto);
     }
 
+    public Page<UserDto> getUsers(String searchTerm,
+                                  Boolean isActive,
+                                  Pageable pageable) {
+        return usersRepository.searchUsers(searchTerm, isActive, pageable)
+                .map(this::mapToDto);
+    }
+
     // Map to DTO for Users
     public UserDto mapToDto(Users users) {
         UserDto dto = new UserDto();
@@ -47,6 +56,8 @@ public class UsersService {
         dto.setUsername(users.getUsername());
         dto.setBirthDate(users.getBirthDate());
         dto.setFullName(users.getFullname());
+        dto.setRoleName(users.getRole().getName());
+        dto.setIsActive(users.getIsActive());
         List<ProfilesDto> profilesDtos = (users.getProfiles() != null) ?
                 users.getProfiles().stream().map(this::mapToProfilesDto).toList() : Collections.emptyList();
         dto.setProfiles(profilesDtos);

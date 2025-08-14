@@ -81,6 +81,37 @@ public class EmailService {
         }
     }
 
+    // Notification Login
+    public void sendLoginNotificationEmail(String to, String fullname) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setTo(to);
+            helper.setSubject("Nuevo inicio de sesión en MoviesApp");
+
+            String htmlContent = "<html>"
+                    + "<body style='font-family: Arial, sans-serif;'>"
+                    + "<div style='padding: 20px; text-align: center;'>"
+                    + "<h1 style='color: #000000;'>¡Hola, " + fullname + "!</h1>"
+                    + "<p style='color: #000000;'>Hubo un nuevo inicio de sesión exitosamente en <strong>MoviesApp</strong>.</p>"
+                    + "<p style='color: #000000;'>Ya puedes acceder a tu cuenta y comenzar a disfrutar de nuestra plataforma.</p>"
+                    + "<p style='color: #000000;'>Si no fuiste tú, por favor contáctanos de inmediato.</p>"
+                    + "<br>"
+                    + "<p style='color: #000000;'>¡Gracias por unirte!</p>"
+                    + "<p style='font-weight: bold; color: #000000;'>— El equipo de MoviesApp</p>"
+                    + "</div>"
+                    + "</body>"
+                    + "</html>";
+
+            helper.setText(htmlContent, true);
+            mailSender.send(message);
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Notification Created new Profile
     public void sendProfileCreatedNotificationEmail(String to, String fullname) {
         try {
