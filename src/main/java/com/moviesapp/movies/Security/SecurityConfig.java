@@ -73,8 +73,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(Arrays.asList(
                 "http://localhost:4200",
-                "https://sxpv2242-4200.brs.devtunnels.ms",
-                "http://localhost:57942"
+                "https://7m0ldn12-4200.brs.devtunnels.ms/"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Content-Disposition"));
